@@ -1,0 +1,139 @@
+//Elizabeth Duncan
+
+package assembler;
+import java.io.*;
+import java.util.*;
+
+
+
+
+public class Assembler {
+	
+	/* The main() method is automatically called when you do a 'java assembler/Assembler add/Add.asm'.
+	   That command means, "Hey java, run the main() method in the file assembler/Assembler.class, using
+	   the 'add/Add.asm' file as a command-line argument."
+	   
+	   This method should:
+	   - grab the command-line argument that was passed in, eg 'add/Add.asm'
+	   -- eg: String filename = args[0]
+	   - instantiate a file object (for reading) using that provided argument (as a string)
+	   -- eg: input = new FileInputStream(filename)
+	   - instantiate a new file object (for writing) that has the sam ebase name as the .asm file
+	   -- eg: output = new FileOutputStream(hackFilename)
+	   - 
+	*/
+	public static void main(String args[]) {  // ADD: I added String args[] as an argument here. These
+	                                          //      are the command-line args.
+		char command_type;                      // DELETE: I don't think you'll need this in main().
+		//Call parser to perform 1st pass
+		Parser(); // DELETE: does not do what you intend
+		
+		//Open input file
+		String asmFilename = args[0];                 // ADD: grab the filename from the command line args
+		myfile = new FileInputStream("hackcode.asm"); // CHANGE: this should use asmFilename
+		
+		//Open output file
+		//Declare output called "output" and put it in mybinary.hack
+		//Prepare to write to the output file
+		FileOutputStream output = new FileOutputStream("mybinary.hack"); // CHANGE: using asmFilename above
+		                                                                 //         figure out how to create
+		                                                                 //         a new String like Add.hack
+		
+		BufferedWriter out = new BufferedWriter(new FileWriter(output));
+		
+		try {     // DELETE: Remove this and the related 'finally' block on line 121 
+			// Open the input file
+    		FileInputStream fstream = new FileInputStream("textfile.txt"); // DELETE: isn't this redundant? See line 33
+    		// Prepare to read from the input file
+    		DataInputStream in = new DataInputStream(fstream);
+        	BufferedReader br = new BufferedReader(new InputStreamReader(in));
+
+        /* DELETE: remove everything below this comment block. All of this logic below should utilize
+                   your Parser class. For example:
+                   parser = new Parser(inputFile);
+                   while (parser.hasMoreCommands()) {
+                     parser.advance();
+                     if (parser.commandType() == parser.L_COMMAND) {
+                       handleLCommand();
+                     } else if (parser.commandType() == parser.C_COMMAND) {
+                       handleCCommand();
+                     } else if (parser.commandType() == parser.A_COMMAND) {
+                       handleACommand();
+                     }
+                   }
+                   Lastly, close the files.
+        */
+    		String line;
+    		//Read File Line By Line
+    		while ((line = br.readLine()) != null)   {
+			
+			
+				if(code.charAt(0) == '@') {
+					command_type = 'A';
+					out.write("0");
+					String noa = line.replace("(", null);
+					noa = line.replace("@", null);
+						if(!predefined.get(noa)) {
+							toBinaryString(noa);     //16 bits???
+						}else{
+							out.write(toBinaryString(predefined.get(noa)));  //16 bits????
+						}
+				
+					if(code.charAt(0) == '(') {
+						command_type = 'L';
+						continue;
+					}else{
+						command_type = 'C';
+						out.write("111");
+						if(command_type == 'C' && code.indexOf(";") != -1 && code.indexOf("=") !=-1){
+							String [] result = line.split(";");
+							String inst = result[0];
+							String jump = result[1];
+							String [] resultt = inst.split("=");
+							String dest = resultt[0];
+							String comp = resultt[1];
+							out.write(comp_func.get(comp));
+							out.write(dest_func.get(dest));
+							out.write(jump_func.get(jump));	
+							out.write("\n");	
+						}
+						if(command_type == 'C' && code.indexOf("=")) {
+							String [] resulto = line.split("=");
+							String dest = resulto[0];
+							String comp = result[1];
+							jump = null;
+							out.write(comp_func.get(comp));
+							out.write(dest_func.get(dest));
+							out.write("000");	
+							out.write("\n");
+						}
+						if(command_type == 'C' && !code.indexOf("=")) {
+							String jump = null;
+							String dest = null;
+							String comp = line;
+							out.write(comp_func.get(comp));
+							out.write(dest_func.get("000"));
+							out.write(jump_func.get("000"));	
+							out.write("\n");
+						}
+					}
+						
+						
+						
+						
+						table.get(line);
+						noa = code.replace("@", null);
+							if(predefined.get(noa) == -1) {
+								toBinaryString(noa);     //16 bits???
+							}else{
+								out.write(toBinaryString(predefined.get(noa)));  //16 bits????
+							}
+						}
+    				}	
+	
+					output.close(); //close output
+						}finally{}
+							
+	}
+	
+}

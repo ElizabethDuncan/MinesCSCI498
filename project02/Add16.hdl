@@ -1,0 +1,41 @@
+// This file is part of the materials accompanying the book 
+// "The Elements of Computing Systems" by Nisan and Schocken, 
+// MIT Press. Book site: www.idc.ac.il/tecs
+// File name: projects/02/Add16.hdl
+
+/**
+ * 16-bit integer adder.  out = a + b where a,b are 16-bit 
+ * 2's complement representations of integers.  Overflow is 
+ * neither detected nor handled.
+ */
+
+CHIP Add16 {
+
+    IN  a[16], b[16];
+    OUT out[16];
+
+    PARTS:
+	
+
+    HalfAdder(a=a[0], b=b[0], sum=out[0], carry=cz);
+	FullAdder(a=a[1], b=b[1], c=cz, sum=out[1], carry=co);
+	FullAdder(a=a[2], b=b[2], c=co, sum=out[2], carry=ctw);
+	FullAdder(a=a[3], b=b[3], c=ctw, sum=out[3], carry=cth);
+	
+	FullAdder(a=a[4], b=b[4], c=cth, sum=out[4], carry=cf);
+	FullAdder(a=a[5], b=b[5], c=cf, sum=out[5], carry=cfi);
+	FullAdder(a=a[6], b=b[6], c=cfi, sum=out[6], carry=cs);
+	FullAdder(a=a[7], b=b[7], c=cs, sum=out[7], carry=cse);
+	
+	FullAdder(a=a[8], b=b[8], c=cse, sum=out[8], carry=ce);
+	FullAdder(a=a[9], b=b[9], c=ce, sum=out[9], carry=cn);
+	FullAdder(a=a[10], b=b[10], c=cn, sum=out[10], carry=cte);
+	FullAdder(a=a[11], b=b[11], c=cte, sum=out[11], carry=cel);
+	
+	FullAdder(a=a[12], b=b[12], c=cel, sum=out[12], carry=ctwe);
+	FullAdder(a=a[13], b=b[13], c=ctwe, sum=out[13], carry=cthir);
+	FullAdder(a=a[14], b=b[14], c=cthir, sum=out[14], carry=cfour);
+	FullAdder(a=a[15], b=b[15], c=cfour, sum=out[15], carry=cfive);
+	
+}
+

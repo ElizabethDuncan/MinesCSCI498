@@ -1,0 +1,40 @@
+// This file is part of the materials accompanying the book 
+// "The Elements of Computing Systems" by Nisan and Schocken, 
+// MIT Press. Book site: www.idc.ac.il/tecs
+// File name: projects/02/Inc16.hdl
+
+/**
+ * 16-bit incrementer.  out = in + 1 (16-bit addition).
+ * Overflow is neither detected nor handled.
+ */
+
+CHIP Inc16 {
+
+    IN  in[16];
+    OUT out[16];
+
+    PARTS:
+	Not(in=in[0], out=nino);
+	And(a=in[0], b=nino, out=zero);
+	Not(in=zero, out=one);
+	
+	HalfAdder(a=in[0], b=one, sum=out[0], carry=cz);
+	HalfAdder(a=in[1], b=cz, sum=out[1], carry=co);
+	HalfAdder(a=in[2], b=co, sum=out[2], carry=ctw);
+	HalfAdder(a=in[3], b=ctw, sum=out[3], carry=cth);
+	
+	HalfAdder(a=in[4], b=cth, sum=out[4], carry=cfo);
+	HalfAdder(a=in[5], b=cfo, sum=out[5], carry=cfi);
+	HalfAdder(a=in[6], b=cfi, sum=out[6], carry=csi);
+	HalfAdder(a=in[7], b=csi, sum=out[7], carry=cse);
+	
+	HalfAdder(a=in[8], b=cse, sum=out[8], carry=cei);
+	HalfAdder(a=in[9], b=cei, sum=out[9], carry=cni);
+	HalfAdder(a=in[10], b=cni, sum=out[10], carry=cte);
+	HalfAdder(a=in[11], b=cte, sum=out[11], carry=cele);
+	
+	HalfAdder(a=in[12], b=cele, sum=out[12], carry=ctwel);
+	HalfAdder(a=in[13], b=ctwel, sum=out[13], carry=cthir);
+	HalfAdder(a=in[14], b=cthir, sum=out[14], carry=cfour);
+	HalfAdder(a=in[15], b=cfour, sum=out[15], carry=cfift);
+}

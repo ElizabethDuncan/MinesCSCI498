@@ -1,0 +1,104 @@
+package assembler;
+//note: remove white space and comments
+
+import java.io.*; //include io capabilities
+import java.util.*;
+
+
+
+
+public class Parser{
+	
+	public static void parser() {
+		char command_type;
+		int memory = 0;
+		//Variable space starts at location 16
+		int variable_loc = 16;
+		
+		
+		
+		
+	//This opens a input file and gets ready to parse it
+	//Delcare input called "myfile" and read from hackcode.asm
+	FileInputStream myfile = new FileInputStream("hackcode.asm");
+
+		try {
+			// Open the input file
+	    	FileInputStream fstream = new FileInputStream("textfile.txt");
+	    	// Prepare to read from the input file
+	    	DataInputStream in = new DataInputStream(fstream);
+	        BufferedReader br = new BufferedReader(new InputStreamReader(in));
+	    	String line;
+	    	//Read File Line By Line
+	    	while ((line = br.readLine()) != null)   {
+				//discard comments
+				String [] result = line.split("//");
+				//Token is comment-less code
+				String token = result[0];
+				//Just making the world easier to understand
+				String code = token;
+				
+//Eliminate whitespace???
+			
+				//Itentify the command type
+				if(code.charAt(0) == '@') {
+					//Remember the command type
+					command_type = 'A';
+					//Get rid of the @ symbol
+					String noa = code.replace("@", null);
+					//If this new string is not in the predefined terms....
+					if(!predefined.get(noa)) {
+						//Put it in the symbol table
+						table.put(noa, variable_loc);
+						variable_loc++;
+					//If the string has a (, it is a l-command
+					}else if(code.charAt(0) == '(') {
+						command_type = 'L';
+						//get rid of the parenthases
+						String nop = code.replace("(", null);
+						nop = code.replace(")", null);
+						//If this new string is not in the predefined terms....
+						if(!predefined.get(nop)) {
+							//put it in the variable table
+							table.put(nop, memory);
+							//Increment the memory for the l-command
+						}
+					}else{
+						command_type = 'C';
+					}
+			
+					if(command_type == 'C' && code.indexOf(";") != -1 && code.indexOf("=") !=-1){
+						String [] resulto = line.split(";");
+						String inst = resulto[0];
+						String jump = resulto[1];
+						String [] result1 = inst.split("=");
+						String dest = result1[0];
+						String comp = result1[1];
+					}
+					if(command_type == 'C' && code.indexOf("=") != -1) {
+						String [] result2 = line.split("=");
+						String dest = result2[0];
+						String comp = result2[1];
+						String jump = null;
+					}
+					if(command_type == 'C' && code.indexOf("=") == -1) {
+						String jump = null;
+						String dest = null;
+						String comp = line;
+					}
+			
+		//Increment the memory value
+		memory++;
+		
+	    }
+
+	    //Close the input stream
+	    in.close();
+		
+	    	}
+		}finally{
+		}
+		
+	}
+}
+
